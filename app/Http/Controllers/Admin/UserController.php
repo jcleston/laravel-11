@@ -14,12 +14,22 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::paginate(15); // User::all();
+        //$users = User::paginate(15); // User::all();
 
-        return view('admin.users.index', compact('users'));
+        //return view('admin.users.index', compact('users'));
+        $user = User::first();
+
+        if ($user == null) {
+            return 'sem usuário';
+        } else {
+            //return $user->name;
+            return view('admin.users.index', compact('user'));
+        }
+
+        //return $user->name;
     }
 
-    public function create()
+    /*    public function create()
     {
         return view('admin.users.create');
     }
@@ -85,5 +95,5 @@ class UserController extends Controller
         return redirect()
             ->route('users.index')
             ->with('success', 'Usuário deletado com sucesso');
-    }
+    }*/
 }
