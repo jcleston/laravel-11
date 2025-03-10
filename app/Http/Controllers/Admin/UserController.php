@@ -15,8 +15,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::paginate(15); //User::all();
-        //dd($users);
+        $users = User::paginate(15);
         return view('admin.users.index', compact('users'));
     }
 
@@ -65,5 +64,32 @@ class UserController extends Controller
         return redirect()
             ->route('users.index')
             ->with('success', 'Usuário editado com sucesso!');
+    }
+
+    public function show(string $id)
+    {
+        if (!$user = User::find($id)) {
+            return redirect()->route('users.index')->with('message', 'Usuário não encontrado');
+        }
+        return view('admin.users.show', compact('user'));
+    }
+
+    public function destroy(string $id)
+    {
+        if (!$user = User::find($id)) {
+            return redirect()->route('users.index')->with('message', 'Usuário não encontrado');
+        }
+
+
+        //dd($user->id);
+        //dd(auth()->user()->id);
+        //if (Auth::user()->id == $user->id) {
+        //    return back()->with('message', 'Você não pode deletar o seu próprio usuário');
+        //}
+
+        $user->delete();
+        return redirect()
+            ->route('users.index')
+            ->with('success', 'Usuário deletado com sucesso!');
     }
 }
